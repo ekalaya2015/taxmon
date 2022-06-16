@@ -1,0 +1,51 @@
+[tool.poetry]
+authors = ["admin <admin@example.com>"]
+description = "REST API for tax monitoring."
+name = "Tax Monitoring"
+version = "0.1.0-alpha"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+PyJWT = {extras = ["crypto"], version = "^2.3.0"}
+SQLAlchemy = {extras = ["asyncio"], version = "^1.4.29"}
+alembic = "^1.7.7"
+asyncpg = "^0.25.0"
+fastapi = "^0.76.0"
+passlib = {extras = ["bcrypt"], version = "^1.7.4"}
+pydantic = {extras = ["email", "dotenv"], version = "^1.9.0"}
+python-multipart = ">=0.0.5,<0.0.6"
+toml = "^0.10.2"
+pytz = "^2022.1"
+sqlmodel = "^0.0.6"
+uvicorn = "^0.17.6"
+
+[tool.poetry.dev-dependencies]
+autoflake = "^1.4"
+black = "^22.3.0"
+coverage = "^6.3.2"
+flake8 = "^4.0.1"
+httpx = "^0.22.0"
+isort = "^5.10.1"
+pytest = "^7.1.2"
+pytest-asyncio = "^0.18.3"
+sqlalchemy2-stubs = "^0.0.2-alpha.22"
+uvicorn = "^0.17.6"
+
+
+[build-system]
+build-backend = "poetry.core.masonry.api"
+requires = ["poetry-core>=1.0.0"]
+
+[tool.pytest.ini_options]
+addopts = "-v"
+asyncio_mode = "auto"
+filterwarnings = []
+markers = ["pytest.mark.asyncio"]
+minversion = "6.0"
+testpaths = [
+  "app/tests",
+]
+
+[tool.isort]
+profile = "black"
