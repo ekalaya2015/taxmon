@@ -61,9 +61,6 @@ async def submit_invoice(
             create_at=datetime.now(timezone),
             modified_at=datetime.now(timezone),
         )
-        print(invoice.dict(exclude={"id", "user_id"}))
-        a = invoice.json()
-        json.dumps(a)
         session.add(invoice)
         await session.commit()
         await session.refresh(invoice)
