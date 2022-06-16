@@ -2,6 +2,7 @@ import smtplib
 import uuid
 from datetime import datetime
 from typing import List
+from pydantic import EmailStr
 
 import pytz
 from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException
@@ -27,9 +28,9 @@ smtp_server = "mail.smtp2go.com"
 port = 2525
 
 
-def send_email(receiver, message):
+def send_email(receiver:EmailStr, message:str):
     with smtplib.SMTP(smtp_server, port) as server:
-        server.login(smtpuser, "Plm1uxf8hOS0NMfc")
+        server.login(smtpuser, "skjdlkasjd")
         server.sendmail(sender, receiver, message)
 
 
