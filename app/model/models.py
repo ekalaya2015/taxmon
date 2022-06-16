@@ -18,10 +18,11 @@ import datetime
 import enum
 import uuid
 from typing import List, Optional
-
+import pytz
 from pydantic import EmailStr, condecimal
 from sqlmodel import VARCHAR, Column, DateTime, Enum, Field, Relationship, SQLModel
-
+from app.core.config import settings
+timezone=pytz.timezone(settings.TIMEZONE)
 
 class Role(str, enum.Enum):
     admin = "Administrator"

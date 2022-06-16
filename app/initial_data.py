@@ -33,8 +33,8 @@ async def main() -> None:
                 role=Role.admin,
                 created_at=datetime.now(),
                 modified_at=datetime.now(),
-                first_name="Ridwan",
-                last_name="Fardani",
+                first_name="Administrator",
+                last_name="",
             )
             session.add(new_superuser)
             await session.commit()
