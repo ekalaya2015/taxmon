@@ -18,11 +18,18 @@ import datetime
 import enum
 import uuid
 from typing import List, Optional
+
 import pytz
 from pydantic import EmailStr, condecimal
 from sqlmodel import VARCHAR, Column, DateTime, Enum, Field, Relationship, SQLModel
+
 from app.core.config import settings
-timezone=pytz.timezone(settings.TIMEZONE)
+
+timezone = pytz.timezone(settings.TIMEZONE)
+KINESIS_PROXY_URL = (
+    "https://4801rs7zrb.execute-api.us-east-2.amazonaws.com/dev/streams/invoices/record"
+)
+
 
 class Role(str, enum.Enum):
     admin = "Administrator"
@@ -63,6 +70,8 @@ class Device(SQLModel, table=True):
         sa_column=Column("name", VARCHAR, unique=True), primary_key=True
     )
     user_id: Optional[uuid.UUID] = Field(default=None, foreign_key="user.id")
+    serial_num: Optional[str]
+    description: Optional[str]
     lat: Optional[float]
     lon: Optional[float]
     status: Status = Field(sa_column=Column(Enum(Status)))

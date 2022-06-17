@@ -68,6 +68,8 @@ async def add_device(
     try:
         device = Device(
             name=new_device.name,
+            serial_num=new_device.serial_num,
+            description=new_device.description,
             created_at=datetime.now(timezone),
             modified_at=datetime.now(timezone),
             status=Status.created,

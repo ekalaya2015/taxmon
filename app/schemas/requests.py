@@ -29,11 +29,13 @@ class UserUpdateProfileRequest(BaseRequest):
 class UserCreateRequest(BaseRequest):
     username: EmailStr
     password: str
-    role: Role=Role.merchant
+    role: Role = Role.merchant
 
 
 class DeviceCreateRequest(BaseRequest):
     name: str
+    serial_num: Optional[str]
+    description: Optional[str]
 
 
 class DeviceAssignRequest(BaseRequest):
@@ -45,5 +47,6 @@ class InvoiceBaseRequest(BaseRequest):
     invoice_num: str
     invoice_date: datetime.datetime
     device_name: str
+    username: str
     tax_value: condecimal(max_digits=15, decimal_places=2)
     total_value: condecimal(max_digits=15, decimal_places=2)

@@ -58,6 +58,8 @@ class DeviceResponse(BaseResponse):
     id: uuid.UUID
     name: str
     status: Optional[Status]
+    serial_num: str
+    description: str
     owner: Optional[UserDeviceResponse] = None
 
 
@@ -80,7 +82,7 @@ class UserDeviceInResponse(UserResponse):
 class InvoiceBaseResponse(BaseResponse):
     id: uuid.UUID
     device_name: str
-    user_id: uuid.UUID
+    username: str
     invoice_num: str
     invoice_date: datetime.datetime
     tax_value: condecimal(max_digits=15, decimal_places=2)

@@ -1,11 +1,10 @@
-import smtplib
+import json
 import uuid
 from datetime import datetime
 from typing import List
-from pydantic import EmailStr
 
 import pytz
-from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import delete, select
 from sqlmodel.ext.asyncio.session import AsyncSession
 
@@ -22,16 +21,6 @@ from app.schemas.responses import BaseUserResponse, UserDeviceInResponse, UserRe
 
 router = APIRouter()
 timezone = pytz.timezone(settings.TIMEZONE)
-smtpuser = "emtres.co.id"
-sender = "ridwan.fardani@gmail.com"
-smtp_server = "mail.smtp2go.com"
-port = 2525
-
-
-def send_email(receiver:EmailStr, message:str):
-    with smtplib.SMTP(smtp_server, port) as server:
-        server.login(smtpuser, "skjdlkasjd")
-        server.sendmail(sender, receiver, message)
 
 
 @router.get("/me", response_model=UserDeviceInResponse)
@@ -185,7 +174,6 @@ async def register_new_user(
     new_user: UserCreateRequest,
     current_user: User = Depends(deps.get_current_user),
     session: AsyncSession = Depends(deps.get_session),
-    backround_task: BackgroundTasks = None,
 ):
     """Create new user"""
 
@@ -204,19 +192,10 @@ async def register_new_user(
         )
         session.add(user)
         await session.commit()
-        # msg=f"""
-        # From: ridwan.fardani@gmail.com
-        # Subject: Tax Monitoring - User Password
-
-        # Your password is {password}
-        # """
-        # backround_task.add_task(send_email,new_user.username,msg)
         return user
-    except Exception:
-        await session.commit()
-        raise HTTPException(
-            status_code=500, detail="Something went wrong. rollback has occured"
-        )
+    except Exception as e:
+        await session.rollback()
+        raise HTTPException(status_code=500, detail=json.dumps(str(e)))
 
 
 @router.get("/", response_model=List[BaseUserResponse])

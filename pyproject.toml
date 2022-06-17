@@ -19,6 +19,8 @@ toml = "^0.10.2"
 pytz = "^2022.1"
 sqlmodel = "^0.0.6"
 uvicorn = "^0.17.6"
+aiohttp = "^3.8.1"
+aioresponses = "^0.7.3"
 
 [tool.poetry.dev-dependencies]
 autoflake = "^1.4"
