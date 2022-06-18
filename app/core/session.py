@@ -18,8 +18,8 @@ from sqlmodel.ext.asyncio.session import AsyncSession
 from app.core import config as app_config
 
 DB_POOL_SIZE = 83
-WEB_CONCURRENCY = 9
-POOL_SIZE = max(DB_POOL_SIZE // WEB_CONCURRENCY, 5)
+WEB_CONCURRENCY = 10
+POOL_SIZE = max(DB_POOL_SIZE // WEB_CONCURRENCY, 8)
 SIZE_POOL_AIOHTTP = 100
 
 # connect_args = {"check_same_thread": False}

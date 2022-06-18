@@ -30,15 +30,10 @@ async def read_current_user(
 ):
     """Get current user"""
     try:
-        # print(current_user.create_at.__class__)
         result = await session.exec(
-            select(User, Device).join(Device).where(User.id == current_user.id)
+            select(Device).where(Device.user_id == current_user.id)
         )
-        userdevice = result.one_or_none()
-        devices = []
-        for o in userdevice._data:
-            if type(o) is Device:
-                devices.append(o)
+        devices = result.fetchall()
         response = UserDeviceInResponse(
             id=current_user.id,
             username=current_user.username,
@@ -50,7 +45,8 @@ async def read_current_user(
             devices=devices,
         )
         return response
-    except Exception:
+    except Exception as ex:
+        print(str(ex))
         raise HTTPException(
             status_code=500, detail="Something went wrong. Contact your admin"
         )
@@ -93,14 +89,8 @@ async def get_user_by_id(
     if user is None:
         raise HTTPException(status_code=400, detail=f"User with id {id} not found")
     try:
-        result = await session.exec(
-            select(User, Device).join(Device).where(User.id == id)
-        )
-        userdevice = result.fetchall()
-        devices = []
-        for o in userdevice:
-            if type(o) is Device:
-                devices.append(o)
+        result = await session.exec(select(Device).where(Device.user_id == id))
+        devices = result.fetchall()
         response = UserDeviceInResponse(
             id=user.id,
             username=user.username,
@@ -112,7 +102,8 @@ async def get_user_by_id(
             devices=devices,
         )
         return response
-    except Exception:
+    except Exception as ex:
+        print(str(ex))
         raise HTTPException(
             status_code=500, detail="Something went wrong. Contact your admin"
         )

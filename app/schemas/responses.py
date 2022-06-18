@@ -48,8 +48,10 @@ class UserDeviceResponse(BaseResponse):
 class DeviceCreatedResponse(BaseResponse):
     id: uuid.UUID
     name: str
-    lat: Optional[float]
-    lon: Optional[float]
+    serial_num: str
+    description: str
+    # lat: Optional[float]
+    # lon: Optional[float]
     status: Status
     # user_id:Optional[uuid.UUID]
 
@@ -60,6 +62,8 @@ class DeviceResponse(BaseResponse):
     status: Optional[Status]
     serial_num: str
     description: str
+    lat: Optional[float]
+    lon: Optional[float]
     owner: Optional[UserDeviceResponse] = None
 
 
@@ -80,10 +84,11 @@ class UserDeviceInResponse(UserResponse):
 
 
 class InvoiceBaseResponse(BaseResponse):
-    id: uuid.UUID
+    # id: uuid.UUID
     device_name: str
     username: str
     invoice_num: str
     invoice_date: datetime.datetime
     tax_value: condecimal(max_digits=15, decimal_places=2)
     total_value: condecimal(max_digits=15, decimal_places=2)
+    timestamp: datetime.datetime

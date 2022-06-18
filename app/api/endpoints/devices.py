@@ -31,7 +31,15 @@ async def get_device_list(
     """Get device list of current user"""
     result = await session.exec(
         select(
-            Device.id, Device.name, Device.status, Device.user_id, User.username
+            Device.id,
+            Device.name,
+            Device.serial_num,
+            Device.status,
+            Device.description,
+            Device.lat,
+            Device.lon,
+            Device.user_id,
+            User.username,
         ).join(User, isouter=True)
     )
     devices = result.fetchall()
@@ -41,7 +49,11 @@ async def get_device_list(
             {
                 "id": dev.id,
                 "name": dev.name,
+                "serial_num": dev.serial_num,
                 "status": dev.status,
+                "lat": dev.lat,
+                "lon": dev.lon,
+                "description": dev.description,
                 "owner": {"user_id": dev.user_id, "username": dev.username},
             }
         )
