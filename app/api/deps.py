@@ -17,11 +17,6 @@ from app.schemas.responses import UserResponse
 reusable_oauth2 = OAuth2PasswordBearer(tokenUrl="auth/access-token")
 
 
-# def get_session():
-#     with Session(engine) as session:
-#         yield session
-
-
 async def get_session() -> AsyncGenerator[AsyncSession, None]:
     async with SessionLocal() as session:
         yield session

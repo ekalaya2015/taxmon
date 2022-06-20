@@ -52,7 +52,7 @@ async def read_current_user(
         )
 
 
-@router.post("/profile", response_model=UserResponse)
+@router.patch("/profile", response_model=UserResponse)
 async def update_profile(
     user_request: UserUpdateProfileRequest,
     current_user: User = Depends(deps.get_current_user),
@@ -60,11 +60,9 @@ async def update_profile(
 ):
     """Update current user profile"""
     try:
-        current_user.first_name = user_request.first_name
-        current_user.last_name = user_request.last_name
-        current_user.nik = user_request.nik
-        current_user.address = user_request.address
-        current_user.modified_at = datetime.now(timezone)
+        for k, v in user_request.dict().items():
+            setattr(current_user, k, v)
+        setattr(current_user, "modified_at", datetime.now(timezone))
         session.add(current_user)
         await session.commit()
         await session.refresh(current_user)
@@ -173,7 +171,6 @@ async def register_new_user(
     if user is not None:
         raise HTTPException(status_code=400, detail="Cannot use this email address")
     try:
-        # password=generate_random_password()
         user = User(
             username=new_user.username,
             hashed_password=get_password_hash(new_user.password),

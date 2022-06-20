@@ -41,6 +41,8 @@ class DeviceCreateRequest(BaseRequest):
 class DeviceAssignRequest(BaseRequest):
     lat: float
     lon: float
+    serial_num: str
+    description: Optional[str]
 
 
 class InvoiceBaseRequest(BaseRequest):

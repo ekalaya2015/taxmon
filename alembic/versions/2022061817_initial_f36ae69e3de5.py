@@ -1,8 +1,8 @@
 """initial
 
-Revision ID: 29fe0a868f5f
+Revision ID: f36ae69e3de5
 Revises: 
-Create Date: 2022-06-16 14:47:37.363683
+Create Date: 2022-06-18 18:17:08.622187
 
 """
 from alembic import op
@@ -11,7 +11,7 @@ import sqlmodel
 
 
 # revision identifiers, used by Alembic.
-revision = "29fe0a868f5f"
+revision = "f36ae69e3de5"
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -49,6 +49,8 @@ def upgrade():
         sa.Column("modified_at", sa.DateTime(timezone=True), nullable=True),
         sa.Column("id", sqlmodel.sql.sqltypes.GUID(), nullable=True),
         sa.Column("user_id", sqlmodel.sql.sqltypes.GUID(), nullable=True),
+        sa.Column("serial_num", sqlmodel.sql.sqltypes.AutoString(), nullable=True),
+        sa.Column("description", sqlmodel.sql.sqltypes.AutoString(), nullable=True),
         sa.Column("lat", sa.Float(), nullable=True),
         sa.Column("lon", sa.Float(), nullable=True),
         sa.ForeignKeyConstraint(

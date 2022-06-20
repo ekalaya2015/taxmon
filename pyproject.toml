@@ -23,6 +23,7 @@ aiohttp = "^3.8.1"
 aioresponses = "^0.7.3"
 boto3 = "^1.24.12"
 celery = {extras = ["redis"], version = "^5.2.7"}
+flower = {extras = ["redis"], version = "^1.0.0"}
 
 [tool.poetry.dev-dependencies]
 autoflake = "^1.4"

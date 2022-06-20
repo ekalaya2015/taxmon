@@ -7,12 +7,9 @@ from sqlmodel.ext.asyncio.session import AsyncSession
 
 from app.api import deps
 from app.core.config import settings
-from app.model.models import Device, User
+from app.model.models import Device, Invoice, User
 from app.schemas.requests import InvoiceBaseRequest
 from app.schemas.responses import InvoiceBaseResponse
-
-# import boto3
-from app.worker import task_put_invoice
 
 timezone = pytz.timezone(settings.TIMEZONE)
 router = APIRouter()
@@ -45,30 +42,21 @@ async def submit_invoice(
             status_code=400, detail=f"User has no device {invoice_request.device_name}"
         )
     try:
-        invoice = InvoiceBaseResponse(
+        invoice = Invoice(
             invoice_num=invoice_request.invoice_num,
             invoice_date=invoice_request.invoice_date,
             device_name=invoice_request.device_name,
             username=current_user.username,
             tax_value=invoice_request.tax_value,
             total_value=invoice_request.total_value,
-            timestamp=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-            created_at=datetime.now(timezone),
-            modified_at=datetime.now(timezone),
+            created_at=datetime.now(timezone).strftime("%Y-%m-%d %H:%M:%S"),
+            modified_at=datetime.now(timezone).strftime("%Y-%m-%d %H:%M:%S"),
         )
         session.add(invoice)
         await session.commit()
         await session.refresh(invoice)
-        print(invoice.json())
         # # TODO: put record in kinesis stream
-        task = task_put_invoice.delay(
-            invoice_request.invoice_num,
-            invoice_request.device_name,
-            invoice_request.username,
-            str((float(invoice_request.tax_value))),
-            str(float(invoice_request.total_value)),
-            datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-        )
+        # task = task_put_invoice.delay(**json.loads(invoice_request.json()))
         return invoice
 
     except Exception as ex:
